@@ -129,6 +129,12 @@ button {
   height:250px;
   width:250px;
 }
+
+.product-card>img{
+  height:250px;
+  width:250px;
+
+}
 /* .login-text
 {
   color: black;
@@ -136,3 +142,24 @@ button {
     margin-top: 3px;
 text-decoration:dashed;
 } */
+.main{
+  display: inline-block;
+  margin: 40px;
+}
+.add-to-cart
+{
+  display: flex;
+  text-align: center;
+  margin: auto;
+place-items: center;
+justify-content: center;
+text-decoration: none;
+}
+* a{
+text-decoration: none;
+}
+#last
+{
+  background-color: mediumaquamarine;
+  
+}
