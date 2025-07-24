@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quickzo Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    /* Floating Chat Icon */
+    .chat-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #00a859;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    /* Chat Window */
+    .chat-window {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 300px;
+      max-height: 450px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .chat-header {
+      background-color: #00a859;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chat-body {
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      background: #f5fdf7;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .chat-input button {
+      background: #00a859;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .bot-msg, .user-msg {
+      margin: 8px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      max-width: 80%;
+      clear: both;
+    }
+
+    .bot-msg {
+      background: #e3fbe8;
+      float: left;
+    }
+
+    .user-msg {
+      background: #00a859;
+      color: white;
+      float: right;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating Chat Icon -->
+<div class="chat-icon" onclick="toggleChat()">💬</div>
+
+<!-- Chat Window -->
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">Quickzo Bot</div>
+  <div class="chat-body" id="chatBody">
+    <div class="bot-msg">Hi there! 👋 I'm QuickzoBot. How can I help you today?</div>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Type your message..." onkeydown="handleKey(event)">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  function toggleChat() {
+    const chat = document.getElementById("chatWindow");
+    chat.style.display = (chat.style.display === "flex") ? "none" : "flex";
+  }
+
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    // Display user message
+    const userMsg = document.createElement("div");
+    userMsg.className = "user-msg";
+    userMsg.innerText = msg;
+    document.getElementById("chatBody").appendChild(userMsg);
+
+    const chatBody = document.getElementById("chatBody");
+    chatBody.scrollTop = chatBody.scrollHeight;
+    input.value = "";
+
+    setTimeout(() => {
+      const botMsg = document.createElement("div");
+      botMsg.className = "bot-msg";
+      botMsg.innerText = getBotReply(msg.toLowerCase());
+      chatBody.appendChild(botMsg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }, 500);
+  }
+
+  function handleKey(e) {
+    if (e.key === "Enter") sendMessage();
+  }
+
+  function getBotReply(input) {
+    const itemsAvailable = ["milk", "bread", "eggs", "banana", "rice", "atta", "oil", "dal", "apple", "tomato"];
+
+    if (["hi", "hello", "hey"].some(word => input.includes(word))) {
+      return "Hello! How can I help you with your grocery needs today?";
+    }
+
+    if (input.includes("order status")) {
+      return "Please provide your order ID so I can check the status.";
+    }
+
+    if (input.includes("delivery")) {
+      return "We deliver within 10–15 minutes across your city! 🚴";
+    }
+
+    if (input.includes("offer") || input.includes("discount")) {
+      return "Today's offer: Buy 1 Get 1 on bananas 🍌 and ₹50 off on orders above ₹499!";
+    }
+
+    for (let item of itemsAvailable) {
+      if (input.includes(item)) {
+        return `Yes, ${item.charAt(0).toUpperCase() + item.slice(1)} is available. Would you like to add it to your cart? 🛒`;
+      }
+    }
+
+    return "I'm here to help with groceries, delivery, order status, and more. Ask me anything!";
+  }
+</script>
+
+</body>
+</html>
